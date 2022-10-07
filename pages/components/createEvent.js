@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import DatePicker from "react-datepicker";
-
+import "react-datepicker/dist/react-datepicker.css";
 function createEvent() {
   const [event, setEvent] = useState({
     id: 0,
@@ -17,6 +17,9 @@ function createEvent() {
     link: "",
   });
   const [date, setDate] = useState(new Date());
+  const selectDateHandler = (d) => {
+    setDate(d);
+  };
   return (
     <>
       <form>
@@ -26,12 +29,11 @@ function createEvent() {
           onChange={(e) => setEvent({ ...event, title: event.title })}
         ></input>
         <DatePicker
-          onChange={(data) => {
-            setDate(data);
-            // setEvent({ ...event, date: event.data.toString() });
-          }}
-          selected={date}
-        ></DatePicker>
+          dateFormat="yyyy/MM/dd"
+          onChange={selectDateHandler}
+          todayButton={"Today"}
+        />
+
         <input></input>
         <input></input>
         <input></input>
