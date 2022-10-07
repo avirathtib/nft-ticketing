@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import { WalletContext } from "./_app";
+import Create from "./components/createEvent";
 
 export default function Home() {
   const address = useAddress();
@@ -20,6 +21,7 @@ export default function Home() {
         <div>
           <ConnectWallet accentColor="#f213a4" colorMode="dark" />
           <p>address is: {address}</p>
+          <Create />
         </div>
       </main>
 
