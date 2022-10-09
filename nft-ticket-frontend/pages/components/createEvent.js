@@ -6,6 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useSigner } from "@thirdweb-dev/react";
 import { ChainId, ThirdwebSDK } from "@thirdweb-dev/sdk";
 import { WalletContext } from "../_app";
+import { v4 as uuid } from "uuid";
+import axios from "../axios/axios";
 function createEvent() {
   const signer = useSigner();
   const sdk = ThirdwebSDK.fromSigner(signer, "goerli");
@@ -43,7 +45,26 @@ function createEvent() {
   };
 
   const submitHandler = () => {
-    console.log("surabhi is a maniac");
+    axios
+      .post("/", {
+        eventId: uuid(),
+        title: title,
+        date: finalDate,
+        price: price,
+        description: description,
+        host: host,
+        totalSeats: totalSeats,
+        link: link,
+        image: file,
+      })
+      .then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   };
 
   const fileChangeHandler = (e) => {

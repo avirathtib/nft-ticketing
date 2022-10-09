@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 
 const eventSchema = new mongoose.Schema({
-  id: {
+  eventId: {
     type: Number,
     required: true,
   },
@@ -43,8 +43,8 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image: {
-    data: Buffer,
-    contentType: String,
+  nftImage: {
+    type: String,
+    required: true,
   },
 });
