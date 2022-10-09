@@ -55,6 +55,7 @@ function createEvent() {
       <form
         onSubmit={(e) => {
           e.preventDefault;
+          submitHandler();
         }}
       >
         <label>
@@ -122,9 +123,7 @@ function createEvent() {
             }}
           ></input>
         </label>
-        <button type="submit" onClick={submitHandler}>
-          Submit
-        </button>
+        <button type="submit">Submit</button>
       </form>
     </>
   );
