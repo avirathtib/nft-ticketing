@@ -2,27 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
+const createEventRoute = require("./routes/Event");
 const app = express();
-var multer = require("multer");
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-app.set("view engine", "ejs");
+app.use(cors());
+// app.set("view engine", "ejs");
 
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now());
-  },
-});
-
-var upload = multer({ storage: storage });
 const client = new MongoClient(
   `mongodb+srv://avirathandsurabhi:avirathandsurabhi@nft-ticketing.l9hzbjb.mongodb.net/?retryWrites=true&w=majority`,
   { useNewUrlParser: true }
@@ -38,6 +24,7 @@ client.connect((err, res) => {
   db = res.db("ticketing");
 });
 
+app.use("", createEventRoute);
 app.listen("0706", () => {
   console.log("Server listening on 0706");
 });
