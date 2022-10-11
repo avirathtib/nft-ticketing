@@ -3,7 +3,7 @@ const validator = require("validator");
 
 const eventSchema = new mongoose.Schema({
   eventId: {
-    type: Number,
+    type: String,
     required: true,
   },
   title: {
@@ -16,7 +16,7 @@ const eventSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
+    required: false,
   },
   description: {
     type: String,
@@ -48,3 +48,5 @@ const eventSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+module.exports = new mongoose.model("Event", eventSchema);

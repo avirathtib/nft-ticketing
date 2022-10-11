@@ -29,7 +29,7 @@ function createEvent() {
   const [title, setTitle] = useState("");
   const [finalDate, setFinalDate] = useState("");
   const [image, setImage] = useState("");
-  const [file, setFile] = useState();
+  const [nftImage, setNftImage] = useState(null);
   const [video, setVideo] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
@@ -44,7 +44,8 @@ function createEvent() {
     setFinalDate(d.toString());
   };
 
-  const submitHandler = () => {
+  const submitHandler = (e) => {
+    // e.preventDefault();
     axios
       .post("/", {
         eventId: uuid(),
@@ -55,28 +56,27 @@ function createEvent() {
         host: host,
         totalSeats: totalSeats,
         link: link,
-        image: file,
+        nftImage: nftImage,
       })
-      .then(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    e.preventDefault();
   };
 
   const fileChangeHandler = (e) => {
-    setFile(e.target.files[0]);
+    console.log(e.target.files[0]);
+    setNftImage(e.target.files[0]);
   };
 
   return (
     <>
       <form
         onSubmit={(e) => {
-          e.preventDefault;
-          submitHandler();
+          submitHandler(e);
         }}
       >
         <label>
@@ -95,13 +95,13 @@ function createEvent() {
           />
         </label>
         <label>Image:</label>
-        <input type="file" value={file} onClick={fileChangeHandler}></input>
+        <input type="file" onChange={fileChangeHandler}></input>
         <label>
           Price:
           <input
             type="number"
             value={price}
-            onChange={(e) => setPrice(e.target.price)}
+            onChange={(e) => setPrice(e.target.value)}
           ></input>
         </label>
         <label>
