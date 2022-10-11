@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useFormik } from "formik";
+import FileBase64 from "react-file-base64";
 import DatePicker from "react-datepicker";
 import { useFileUpload } from "use-file-upload";
 import "react-datepicker/dist/react-datepicker.css";
@@ -29,7 +29,7 @@ function createEvent() {
   const [title, setTitle] = useState("");
   const [finalDate, setFinalDate] = useState("");
   const [image, setImage] = useState("");
-  const [nftImage, setNftImage] = useState(null);
+  const [files, setFiles] = useState([]);
   const [video, setVideo] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
@@ -56,7 +56,7 @@ function createEvent() {
         host: host,
         totalSeats: totalSeats,
         link: link,
-        nftImage: nftImage,
+        image: image,
       })
       .then((response) => {
         console.log(response);
@@ -65,11 +65,6 @@ function createEvent() {
         console.log(err);
       });
     e.preventDefault();
-  };
-
-  const fileChangeHandler = (e) => {
-    console.log(e.target.files[0]);
-    setNftImage(e.target.files[0]);
   };
 
   return (
@@ -95,7 +90,14 @@ function createEvent() {
           />
         </label>
         <label>Image:</label>
-        <input type="file" onChange={fileChangeHandler}></input>
+
+        <FileBase64
+          multiple={false}
+          onDone={({ base64 }) => {
+            setImage(base64);
+            console.log(image);
+          }}
+        />
         <label>
           Price:
           <input

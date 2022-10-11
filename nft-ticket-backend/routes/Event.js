@@ -36,7 +36,7 @@ router.post("/", upload.single("nftImage"), async (req, res) => {
     totalSeats: req.body.totalSeats,
     availableSeats: req.body.totalSeats,
     link: req.body.link,
-    // nftImage: req.body.nftImage,
+    image: req.body.image,
   });
   try {
     console.log(event);
