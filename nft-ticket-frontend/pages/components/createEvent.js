@@ -61,11 +61,11 @@ function createEvent() {
       image: image,
     });
     e.preventDefault();
-    const contractAddress = await sdk.deployer
-      .deployNFTCollection({
-        name: "My Collection",
-        primary_sale_recipient: host,
-      })
+    const contractAddress = await sdk.deployer.deployNFTDrop({
+      name: "My Drop",
+      primary_sale_recipient: host,
+    });
+    setTempContractAddress(contractAddress)
       .then((response) => {
         console.log(response);
       })
