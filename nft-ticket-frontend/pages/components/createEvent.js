@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
-import { useFormik } from "formik";
+import FileBase64 from "react-file-base64";
 import DatePicker from "react-datepicker";
 import { useFileUpload } from "use-file-upload";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSigner } from "@thirdweb-dev/react";
 import { ChainId, ThirdwebSDK } from "@thirdweb-dev/sdk";
+import { useContract } from "@thirdweb-dev/react";
+
 import { WalletContext } from "../_app";
 import { v4 as uuid } from "uuid";
 import axios from "../axios/axios";
@@ -29,8 +31,9 @@ function createEvent() {
   const [title, setTitle] = useState("");
   const [finalDate, setFinalDate] = useState("");
   const [image, setImage] = useState("");
-  const [nftImage, setNftImage] = useState(null);
+  const [files, setFiles] = useState([]);
   const [video, setVideo] = useState("");
+  const [tempContractAddress, setTempContractAddress] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [host, setHost] = useState("");
@@ -44,19 +47,24 @@ function createEvent() {
     setFinalDate(d.toString());
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     // e.preventDefault();
-    axios
-      .post("/", {
-        eventId: uuid(),
-        title: title,
-        date: finalDate,
-        price: price,
-        description: description,
-        host: host,
-        totalSeats: totalSeats,
-        link: link,
-        nftImage: nftImage,
+    axios.post("/", {
+      eventId: uuid(),
+      title: title,
+      date: finalDate,
+      price: price,
+      description: description,
+      host: host,
+      totalSeats: totalSeats,
+      link: link,
+      image: image,
+    });
+    e.preventDefault();
+    const contractAddress = await sdk.deployer
+      .deployNFTCollection({
+        name: "My Collection",
+        primary_sale_recipient: host,
       })
       .then((response) => {
         console.log(response);
@@ -64,12 +72,6 @@ function createEvent() {
       .catch((err) => {
         console.log(err);
       });
-    e.preventDefault();
-  };
-
-  const fileChangeHandler = (e) => {
-    console.log(e.target.files[0]);
-    setNftImage(e.target.files[0]);
   };
 
   return (
@@ -95,7 +97,14 @@ function createEvent() {
           />
         </label>
         <label>Image:</label>
-        <input type="file" onChange={fileChangeHandler}></input>
+
+        <FileBase64
+          multiple={false}
+          onDone={({ base64 }) => {
+            setImage(base64);
+            console.log(image);
+          }}
+        />
         <label>
           Price:
           <input
@@ -146,6 +155,7 @@ function createEvent() {
         </label>
         <button type="submit">Submit</button>
       </form>
+      <p>{tempContractAddress}</p>
     </>
   );
 }

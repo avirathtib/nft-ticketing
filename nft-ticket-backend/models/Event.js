@@ -43,7 +43,7 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  nftImage: {
+  image: {
     type: String,
     required: true,
   },
