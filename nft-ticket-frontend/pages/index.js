@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import { WalletContext } from "./_app";
-import Create from "./components/createEvent";
+import Create from "./createEvent";
 
 export default function Home() {
   const address = useAddress();
