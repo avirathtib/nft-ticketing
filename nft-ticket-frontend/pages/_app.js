@@ -8,11 +8,11 @@ export const ContractContext = createContext();
 const activeChainId = ChainId.Goerli;
 
 function MyApp({ Component, pageProps }) {
-  const [wallet, setWallet] = useState();
-  const [contract, setContract] = useState();
+  const [wallet, setWallet] = useState("");
+  const [nftContract, setNftContract] = useState("");
   return (
     <WalletContext.Provider value={{ wallet, setWallet }}>
-      <ContractContext.Provider value={{ contract, setContract }}>
+      <ContractContext.Provider value={{ nftContract, setNftContract }}>
         <ThirdwebProvider desiredChainId={activeChainId}>
           <Component {...pageProps} />
         </ThirdwebProvider>

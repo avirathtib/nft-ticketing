@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import FileBase64 from "react-file-base64";
 import DatePicker from "react-datepicker";
 import { useFileUpload } from "use-file-upload";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSigner } from "@thirdweb-dev/react";
 import { ChainId, ThirdwebSDK } from "@thirdweb-dev/sdk";
+import { Web3Button } from "@thirdweb-dev/react";
 import { ContractContext } from "../_app";
 import { WalletContext } from "../_app";
 import { v4 as uuid } from "uuid";
@@ -15,7 +16,7 @@ function createEvent() {
   const signer = useSigner();
   const sdk = ThirdwebSDK.fromSigner(signer, "goerli");
   const { wallet, setWallet } = useContext(WalletContext);
-  const { contract, setContract } = useContext(ContractContext);
+  const { nftContract, setNftContract } = useContext(ContractContext);
   const [event, setEvent] = useState({
     id: 0,
     title: "",
@@ -29,6 +30,7 @@ function createEvent() {
     availableSeats: 0,
     link: "",
   });
+
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [finalDate, setFinalDate] = useState("");
@@ -44,25 +46,14 @@ function createEvent() {
   const [availableSeats, setAvailableSeats] = useState(0);
   const [link, setLink] = useState("");
   const [date, setDate] = useState(new Date());
+  useEffect(() => {
+    console.log("contract", nftContract);
+  }, [nftContract]);
   const selectDateHandler = (d) => {
-    console.log("hi" + d);
     setDate(d);
     setFinalDate(d.toString());
   };
 
-  const mintHandler = async () => {
-    // const { contract } = useContract(tempContractAddress, "nft-drop");
-    // const metadatas = [
-    //   {
-    //     name: `Ticket for ${title}`,
-    //     description: description,
-    //     // image: fs.readFileSync("/Users/avirathtibrewala/Desktop/nba.png"),
-    //   },
-    // ];
-    // const results = await contract.createBatch(metadatas);
-    // const firstNFT = await results[0].data();
-    console.log("lol");
-  };
   // e.preventDefault();
   const submitHandler = async (e) => {
     // e.preventDefault();
@@ -86,7 +77,8 @@ function createEvent() {
     setMintPossible(true);
     console.log("Contract address", contractAddress);
     console.log(mintPossible);
-    setContract(contractAddress);
+    setNftContract(contractAddress);
+    // console.log("address", contract);
     // const metadatas = [
     //   {
     //     name: `Ticket for ${title}`,
@@ -182,12 +174,16 @@ function createEvent() {
         <button type="submit">Submit</button>
       </form>
       <p>{tempContractAddress}</p>
-      {mintPossible ? (
+      {nftContract != "" ? (
         <div>
-          <h1>
-            {" "}
-            <Link href="/mint">Mint NFT</Link>
-          </h1>
+          <Web3Button
+            contractAddress={nftContract}
+            action={(contract) => {
+              console.log(contract);
+            }}
+          >
+            Mint NFT
+          </Web3Button>
         </div>
       ) : (
         <></>
