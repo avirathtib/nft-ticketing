@@ -4,13 +4,13 @@ import { WalletContext } from "../_app";
 import { useContract } from "@thirdweb-dev/react";
 function mint() {
   const { wallet, setWallet } = useContext(WalletContext);
-  const { contract, setContract } = useContext(ContractContext);
-  const { mintContract } = useContract(contract, "nft-drop");
+  const { nftContract, setNftContract } = useContext(ContractContext);
+  const { contract } = useContract(nftContract, "nft-drop");
   return (
     <div>
-      {console.log(mintContract)}
-
-      <p>hello {mintContract}</p>
+      {console.log(nftContract)}
+      {console.log(contract)}
+      <p>hello</p>
     </div>
   );
 }
