@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import FileBase64 from "react-file-base64";
 import DatePicker from "react-datepicker";
-import { useFileUpload } from "use-file-upload";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSigner } from "@thirdweb-dev/react";
 import { ChainId, ThirdwebSDK } from "@thirdweb-dev/sdk";
