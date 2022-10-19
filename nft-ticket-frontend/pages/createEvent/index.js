@@ -9,7 +9,7 @@ import { Web3Button } from "@thirdweb-dev/react";
 import { ContractContext } from "../_app";
 import { WalletContext } from "../_app";
 import { v4 as uuid } from "uuid";
-import Link from "next/link";
+import moment from "moment";
 
 import axios from "../axios/axios";
 function createEvent() {
@@ -45,12 +45,13 @@ function createEvent() {
   const [totalSeats, setTotalSeats] = useState(0);
   const [availableSeats, setAvailableSeats] = useState(0);
   const [link, setLink] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState("");
   useEffect(() => {
     console.log("contract", nftContract);
   }, [nftContract]);
   const selectDateHandler = (d) => {
-    setDate(d);
+    const displaydate = d.toString().split(" ").slice(1, 4).join(" ");
+    setDate(displaydate);
     setFinalDate(d.toString());
   };
 
@@ -110,8 +111,10 @@ function createEvent() {
           Date:
           <DatePicker
             dateFormat="yyyy/MM/dd"
+            value={date}
             onChange={selectDateHandler}
             todayButton={"Today"}
+            minDate={moment().toDate()}
           />
         </label>
         <label>Image:</label>
