@@ -1,29 +1,7 @@
 const router = require("express").Router();
 const Event = require("../models/Event");
-const multer = require("multer");
-const { fstat } = require("fs");
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    dirname = "./uploads/";
-    if (!fs.existsSync(dirname)) {
-      fs.mkdirSync(dirname);
-    }
-    cb(null, dirname);
-  },
-  filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
-  },
-});
-var upload = multer({ storage: storage, fileFilter: fileFilter });
 
-router.post("/", upload.single("nftImage"), async (req, res) => {
+router.post("/", async (req, res) => {
   console.log(req.body);
   // console.log(JSON.parse(req.body));
   const event = new Event({
@@ -49,6 +27,16 @@ router.post("/", upload.single("nftImage"), async (req, res) => {
 
     res.status(500).json(err);
   }
+});
+
+router.get("/", async (req, res) => {
+  Event.find((err, data) => {
+    if (err) {
+      res.status(501).send(err);
+    } else {
+      res.status(200).send(data);
+    }
+  });
 });
 
 module.exports = router;

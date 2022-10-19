@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import FileBase64 from "react-file-base64";
 import DatePicker from "react-datepicker";
-import { useFileUpload } from "use-file-upload";
 import "react-datepicker/dist/react-datepicker.css";
 import { useSigner } from "@thirdweb-dev/react";
 import { ChainId, ThirdwebSDK } from "@thirdweb-dev/sdk";
@@ -30,7 +29,7 @@ function createEvent() {
     availableSeats: 0,
     link: "",
   });
-
+  const [metadata, setMetadata] = useState([]);
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [finalDate, setFinalDate] = useState("");
@@ -78,6 +77,7 @@ function createEvent() {
     setMintPossible(true);
     console.log("Contract address", contractAddress);
     console.log(mintPossible);
+    setMetadatas();
     setNftContract(contractAddress);
     // console.log("address", contract);
     // const metadatas = [
@@ -91,6 +91,18 @@ function createEvent() {
     // const results = await contract.createBatch(metadatas);
     // const firstNFT = await results[0].data();
     // console.log(firstNFT);
+  };
+
+  const setMetadatas = () => {
+    let temp = [];
+    for (let i = 0; i < totalSeats; i++) {
+      const tempTicket = {
+        name: `Ticket ${i + 1}`,
+        description: `Ticket for ${title}`,
+      };
+      temp.push(tempTicket);
+    }
+    setMetadata(temp);
   };
 
   return (
@@ -181,8 +193,13 @@ function createEvent() {
         <div>
           <Web3Button
             contractAddress={nftContract}
-            action={(contract) => {
+            action={async (contract) => {
               console.log(contract);
+              console.log(metadata);
+              const results = await contract.createBatch(metadata); // uploads and creates the NFTs on chain
+              const firstTokenId = results[0].id; // token id of the first created NFT
+              const firstNFT = await results[0].data(); // (optional) fetch details of the first created NFT
+              console.log(firstNFT);
             }}
           >
             Mint NFT
