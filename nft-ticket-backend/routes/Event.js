@@ -29,6 +29,18 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  Event.findOne({ eventId: req.params.id }, (err, data) => {
+    if (err) {
+      res.status(501).send(err);
+    } else {
+      console.log(data);
+      console.log(req.params);
+      res.status(200).send(data);
+    }
+  });
+});
+
 router.get("/", async (req, res) => {
   Event.find((err, data) => {
     if (err) {

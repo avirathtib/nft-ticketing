@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../axios/axios";
 import Card from "react-bootstrap/Card";
+import Link from "next/link";
 
 function Events() {
   const [allEvents, setAllEvents] = useState([]);
@@ -24,6 +25,7 @@ function Events() {
       <Card.Body>
         <Card.Title>{event.title}</Card.Title>
         <Card.Text>{event.description}</Card.Text>
+        <Link href={`/event/${event.eventId}`}>link to event main page</Link>
       </Card.Body>
     </Card>
   ));
