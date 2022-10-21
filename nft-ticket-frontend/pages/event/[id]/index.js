@@ -1,18 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import Card from "react-bootstrap/Card";
+import { ethers } from "ethers";
 import axios from "../../axios/axios";
+import { ConnectWallet, useAddress, useBalance } from "@thirdweb-dev/react";
+
+import { WalletContext } from "../../_app";
 function IndiEvent() {
+  const address = useAddress();
+  const provider = ethers.getDefaultProvider();
+  const balance = useBalance();
   const router = useRouter();
   // const {
   //   isReady,
   //   query: { id },
   // } = router;
   const [event, setEvent] = useState(null);
-
+  const [tokenBalance, setTokenBalance] = useState(0);
+  const { wallet, setWallet } = useContext(WalletContext);
   useEffect(() => {
-    console.log(event);
-  }, [event]);
+    setWallet(address);
+    setTokenBalance(balance);
+  }, [address]);
   useEffect(() => {
     if (!router.isReady) {
       console.log("Router not ready");
@@ -32,8 +41,26 @@ function IndiEvent() {
     console.log(response);
     setEvent(newData);
   };
-  //#endregion
-  const listEvent = (event) => (
+
+  const registerHandler = () => {
+    if (!wallet) {
+      alert("wallet not connected");
+    } else if (event.availableSeats == 0) {
+      alert("no seats available - event booked out");
+    } else {
+      // const balance = await provider.getBalance(wallet);
+      // const intBalance = balance.toNumber();
+      // console.log(intBalance / 1e18);
+      console.log(balance.data.displayValue);
+      if (balance.data.displayValue < event.price) {
+        alert("Not enough funds to cover the transaction base cost");
+      } else {
+        console.log("Cool");
+      }
+    }
+  };
+
+  const listEvent = () => (
     <Card style={{ width: "18rem" }}>
       <Card.Img variant="top" />
       <Card.Body>
@@ -45,8 +72,10 @@ function IndiEvent() {
   return (
     <div>
       {/* <div>{router.query}</div> */}
-      {console.log(event)}
-      <div>{listEvent(event)}</div>
+      <ConnectWallet accentColor="#f213a4" colorMode="dark" />
+      <p>address is: {address}</p>
+      <button onClick={registerHandler}>Register for Event</button>
+      {event != null ? listEvent() : <></>}
     </div>
   );
 }

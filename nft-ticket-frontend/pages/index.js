@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -7,8 +7,11 @@ import { WalletContext } from "./_app";
 import Create from "./createEvent";
 
 export default function Home() {
+  const { wallet, setWallet } = useContext(WalletContext);
   const address = useAddress();
-  // setWallet(address);
+  useEffect(() => {
+    setWallet(address);
+  }, [address]);
   return (
     <div className={styles.container}>
       <Head>
