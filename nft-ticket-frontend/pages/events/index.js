@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "../axios/axios";
 import Card from "react-bootstrap/Card";
 import Link from "next/link";
+import { useContract } from "@thirdweb-dev/react";
 
 function Events() {
   const [allEvents, setAllEvents] = useState([]);
-
   useEffect(() => {
     console.log(allEvents);
   }, [allEvents]);

@@ -47,6 +47,15 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  contractAddress: {
+    type: String,
+    required: true,
+    validate(value) {
+      if (!validator.isEthereumAddress(value)) {
+        throw new Error("Address is invalid");
+      }
+    },
+  },
 });
 
 module.exports = new mongoose.model("Event", eventSchema);
