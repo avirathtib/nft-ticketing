@@ -15,6 +15,7 @@ router.post("/", async (req, res) => {
     availableSeats: req.body.totalSeats,
     link: req.body.link,
     image: req.body.image,
+    contractAddress: req.body.contractAddress,
   });
   try {
     console.log(event);

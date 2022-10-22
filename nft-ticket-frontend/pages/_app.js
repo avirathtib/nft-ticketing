@@ -13,7 +13,13 @@ function MyApp({ Component, pageProps }) {
   return (
     <WalletContext.Provider value={{ wallet, setWallet }}>
       <ContractContext.Provider value={{ nftContract, setNftContract }}>
-        <ThirdwebProvider desiredChainId={activeChainId}>
+        <ThirdwebProvider
+          chainRpc={{
+            [ChainId.Goerli]:
+              "https://goerli.infura.io/v3/0727e64a7aa44b46a36ba9c62119f6c3",
+          }}
+          desiredChainId={activeChainId}
+        >
           <Component {...pageProps} />
         </ThirdwebProvider>
       </ContractContext.Provider>
