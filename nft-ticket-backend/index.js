@@ -11,7 +11,6 @@ app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }));
 app.use(express.json());
 app.use(cors());
 // app.set("view engine", "ejs");
-//  `mongodb+srv://avirathandsurabhi:avirathandsurabhi@nft-ticketing.l9hzbjb.mongodb.net/?retryWrites=true&w=majority`
 
 mongoose
   .connect(
