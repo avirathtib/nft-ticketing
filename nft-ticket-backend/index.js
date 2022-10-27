@@ -15,7 +15,7 @@ app.use(cors());
 
 mongoose
   .connect(
-    `mongodb+srv://avirathandsurabhi:avirathandsurabhi@nft-ticketing.l9hzbjb.mongodb.net/?retryWrites=true&w=majority`
+    `mongodb+srv://@nft-ticketing.l9hzbjb.mongodb.net/?retryWrites=true&w=majority`
   )
   .then(() => {
     console.log("Connection successful");
